@@ -33,6 +33,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         configuration.isLightEstimationEnabled = true
 
         // デバッグオプション
+        // showWorldOrigin: ワールド座標の原点を可視化する
+        // showFeaturePoints: ARKit が検出した 3D 特徴点群を可視化する
+        // ARSCNDebugOptionsは SCNDebugOptionsの typealiasなので、debugOptions プロパティに他の(ARSCNDebugOptionsではない)オプションと一緒に指定できます。
 //        sceneView.debugOptions = [.showBoundingBoxes]
 //        sceneView.debugOptions = [.showWireframe]
         sceneView.debugOptions = [.renderAsWireframe]
@@ -82,9 +85,21 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
 
     // MARK: - ARSessionObserver
-    
+    // トラッキング状態に変化があ ると呼ばれるメソッド
     func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
-        print("trackingState: \(camera.trackingState)")
+        print("trackingState: \(camera.trackingState)") // トラッキング情報が trackingState に入っている
+        
+        // NOTE: ARCamera.TrackingState の enum
+        // notAvailable: トラッキング不可
+        // limited(ARCamera.TrackingState.Reason): トラッキング品質が制限されている
+        // normal: 正常にトラッキングが行えている
+        
+        // limitedの ARCamera.TrackingState.Reason : 理由
+        // initializing: 初期化処理中
+        // relocalizing: セッション中断後の再開処理中
+        // excessiveMotion: デバイスの動きが速すぎる
+        // insufficientFeatures: カメラに映るシーン内の識別可能な特徴が十分でない(もっとテクスチャのある平面が必要)
+        
         trackingStateLabel.text = camera.trackingState.description
     }
 }

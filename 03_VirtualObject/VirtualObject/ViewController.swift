@@ -36,8 +36,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     }
     
     private func loadModel() -> SCNNode {
-        guard let scene = SCNScene(named: "duck.scn", inDirectory: "models.scnassets/duck") else {fatalError()}
         
+        // 3Dモデルを読み込む
+        guard let scene = SCNScene(named: "duck.scn", inDirectory: "models.scnassets/duck") else {fatalError()}
+        // 生成したシーンの rootNode 配下の子ノードを別のノードに載せ替える
         let modelNode = SCNNode()
         
         for child in scene.rootNode.childNodes {
@@ -60,7 +62,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         planeAnchor.addPlaneNode(on: node, contents: UIColor.yellow.withAlphaComponent(0.5))
                 
         DispatchQueue.main.async(execute: {
-            // 仮想オブジェクトを乗せる
+            // 平面アンカーに対応するノード上に仮想オブジェクトを乗せる
             node.addChildNode(self.virtualObjectNode)
         })
     }
